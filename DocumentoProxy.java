@@ -5,7 +5,7 @@ public class DocumentoProxy implements Documento{
     private Grupo grupoUsuario;
 
     public DocumentoProxy(String nombreArchivo, Rol rolUsuario, Grupo grupoUsuario, boolean esConfidencial){
-        this.nombreArchivo = nombreArchivo;
+        this.nombreArchivo = nombreArchivo + "_Grupo: " + grupoUsuario ;
         this.rolUsuario = rolUsuario;
         this.grupoUsuario = grupoUsuario;
         if(tienePermiso()){
@@ -48,14 +48,8 @@ public class DocumentoProxy implements Documento{
         return documento != null ? documento.getTitulo() : nombreArchivo;
     }
 
-    // @Override
-    // public void modificarContenido(String nuevoContenido) {
-    //     if(rolUsuario == Rol.ADMINISTRADOR){
-    //         if(documento != null){
-    //             documento.modificarContenido(nuevoContenido);
-    //         }
-    //     } else {
-    //         System.out.println("Acceso Denegado: Solo los administradores pueden modificar el contenido de los documentos.");
-    //     }
-    // }
+    @Override
+    public Grupo getGrupo(){
+        return this.grupoUsuario;
+    }
 }

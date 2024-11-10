@@ -47,15 +47,10 @@ public class DocumentoReal implements Documento{
         return titulo;
     }
 
+    @Override
     public Grupo getGrupo(){
         return this.grupo;
     }
-
-    // @Override
-    // public void modificarContenido (String nuevoContenido){
-    //     this.contenido = nuevoContenido;
-    //     System.out.println("Contenido modificado: " + nuevoContenido);
-    // }
 
     public boolean esConfidencial(){
         return esConfidencial;

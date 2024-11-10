@@ -6,13 +6,21 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         
         //Registro inicial de algunos usuarios
+        Usuario aux = new Usuario("aux", Rol.ADMINISTRADOR, Grupo.GRUPO_A);
         sistema.registrarUsuario("Luis", Rol.ADMINISTRADOR, Grupo.GRUPO_A);
         sistema.registrarUsuario("Marta", Rol.GERENTE, Grupo.GRUPO_B);
-        sistema.registrarUsuario("Pedro", Rol.EMPLEADO, Grupo.GRUPO_C);
+        sistema.registrarUsuario("Pedro", Rol.EMPLEADO, Grupo.GRUPO_D);
+        sistema.registrarUsuario("Juan", Rol.GERENTE, Grupo.GRUPO_D);
 
+        sistema.agregarDocumento("Doc1", false, Grupo.GRUPO_A, aux);
+        sistema.agregarDocumento("Doc2", true, Grupo.GRUPO_B, aux);
+        sistema.agregarDocumento("Doc3", false, Grupo.GRUPO_C, aux);
+        sistema.agregarDocumento("Doc4", true, Grupo.GRUPO_D, aux);
+
+        int caso = 0;
         Usuario usuarioActual = null;
 
-        while(true){
+        while(caso == 0){
             System.out.println("\n--- Sistema de Gestión de Documentos ---");
             System.out.println("1. Iniciar sesión");
             System.out.println("2. Registrar usuario (solo administrador)");
@@ -25,18 +33,19 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-                    System.out.println("Ingrese su nombre: ");
+                    System.out.println("\nIngrese su nombre: ");
+                    sistema.listaUsuarios();
                     String nombre = sc.nextLine();
                     usuarioActual = sistema.buscarUsuario(nombre).orElse(null);
                     if(usuarioActual != null){
-                        System.out.println("Bienvenido, " + nombre + ". Su rol es " + usuarioActual.getRol());
+                        System.out.println("\nBienvenido, " + nombre + ". Su rol es " + usuarioActual.getRol() + ". Grupo: " + usuarioActual.getGrupo());
                     } else {
                         System.out.println("Usuario no encontrado");
                     }
                     break;
                 case 2:
                     if(usuarioActual != null && usuarioActual.getRol() == Rol.ADMINISTRADOR){
-                        System.out.println("Nombre del nuevo usuario: ");
+                        System.out.println("\nNombre del nuevo usuario: ");
                         String nuevoNOmbre = sc.nextLine();
                         System.out.println("Rol del nuevo usuario (EMPLEADO, GERENTE, ADMINISTRADOR): ");
                         Rol nuevoROl = Rol.valueOf(sc.nextLine().toUpperCase());
@@ -50,7 +59,7 @@ public class Main {
                     
                 case 3:
                     if(usuarioActual != null && usuarioActual.getRol() == Rol.ADMINISTRADOR){
-                        System.out.println("Nombre del nuevo documento: ");
+                        System.out.println("\nNombre del nuevo documento: ");
                         String nuevoDoc = sc.nextLine();
                         System.out.println("¿Es confidencial (true / false): ");
                         boolean esConfidencial = sc.nextBoolean();
@@ -66,7 +75,7 @@ public class Main {
                 case 4:
                 if(usuarioActual != null){
                     sistema.listarDocumentos();
-                    System.out.println("Nombre del documento a acceder: ");
+                    System.out.println("\nNombre del documento a acceder: ");
                     String nombreAcceso = sc.nextLine();
                     sistema.accederDocumento(nombreAcceso, usuarioActual);
                 } else {
@@ -76,13 +85,13 @@ public class Main {
                 
                 case 5:
                     System.out.println("Saliendo del sistema.");
-                    sc.close();
+                    caso++;
+                    break;
                 default:
                     System.out.println("Opción no válida");
                 break;
             }
         }
-
-
+        sc.close();
     }
 }
